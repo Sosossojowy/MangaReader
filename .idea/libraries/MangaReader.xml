@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MangaReader">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/MangaReader/dist/MangaReader.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
