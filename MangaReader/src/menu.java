@@ -1,20 +1,33 @@
-
-import java.awt.event.ActionEvent;
+import javax.swing.*;
 import java.io.File;
-
-import javax.swing.ImageIcon;
+import java.util.stream.IntStream;
 
 
 public class menu extends javax.swing.JFrame {
+
+
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
 
 
     public menu() {
         initComponents();
     }
 
+    public static void main(String[] args) {
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new menu().setVisible(true);
+            }
+        });
+    }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -33,7 +46,12 @@ public class menu extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"}));
+        String[] chapters = IntStream.rangeClosed(1, 110)
+                .mapToObj(String::valueOf)
+                .toArray(String[]::new);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(chapters));
+
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imageDownload(evt);
@@ -47,12 +65,12 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("TJC 82 Marker", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("TJC 82 Marker", 0, 24));
         jLabel1.setText("Manga Reader Dandadan");
 
         jLabel2.setText("Wybierz rozdział");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/title.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/title.png")));
         jLabel3.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -111,24 +129,21 @@ public class menu extends javax.swing.JFrame {
                                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
-
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
     private void imageDownload(java.awt.event.ActionEvent evt) {
         String username = System.getProperty("user.name");
         int indexRozdzialu = jComboBox1.getSelectedIndex();
         String numerRozdzialu = String.format("%02d", indexRozdzialu + 1);
-        ;
 
         wczytywanie wczytaj1 = new wczytywanie();
 
-        wczytaj1.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
+        wczytywanie.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
         new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs();
 
-        wczytaj1.Pobiez(numerRozdzialu);
-    }//GEN-LAST:event_imageDownload
-
+        wczytywanie.Pobiez(numerRozdzialu);
+    }
 
     private void NoweOkno(java.awt.event.ActionEvent evt) {
         JButton jbutton1 = new JButton("1");
@@ -136,27 +151,8 @@ public class menu extends javax.swing.JFrame {
         JButton.createFrame();
 
     }
-
     private void formWindowsActivated(java.awt.event.WindowEvent evt) {
         ImageIcon icon = new ImageIcon("src/mr.png");
         setIconImage(icon.getImage());
     }
-
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new menu().setVisible(true);
-            }
-        });
-    }
-
-
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-
 }
