@@ -14,7 +14,6 @@ public class JButton {
     public JButton(String new_Frame) {
     }
 
-
     public static void createFrame() {
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -44,7 +43,7 @@ public class JButton {
                 JPanel contentPane = new JPanel(null);
                 contentPane.setPreferredSize(new Dimension(width, height));
                 contentPane.add(scrollPane);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setContentPane(contentPane);
                 frame.pack();
                 frame.setVisible(true);
