@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -21,10 +23,12 @@ public class wczytywanie {
         folder.delete();
     }
 
+
     public static void Pobiez(String numerRozdzialu) {
 
+        BufferedImage image;
 
-        BufferedImage image = null;
+
         try {
             int chapter = Integer.parseInt(numerRozdzialu);
             boolean done = true;
@@ -41,8 +45,10 @@ public class wczytywanie {
                         URL url = new URL(link);
                         image = ImageIO.read(url);
 
+
                         ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + numerStrony + ".png"));
                         i++;
+
                     } else if (chapter < 100) {
                         String link = "https://scans-hot.leanbox.us/manga/Dandadan/00" + numerRozdzialu + "-0" + numerStrony + ".png";
 
@@ -66,10 +72,12 @@ public class wczytywanie {
                     e.printStackTrace();
                     done = false;
                 }
+
             }
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
         }
+
     }
 
 }
