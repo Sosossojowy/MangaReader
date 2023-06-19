@@ -22,9 +22,9 @@ public class JButton {
 
                 JPanel panel = new JPanel();
                 for (int i = 0; i < 70; i++) {
-                    String numerStrony = String.format("%02d", i + 1);
+                    String page = String.format("%02d", i + 1);
                     ImageIcon image = new ImageIcon(
-                            "C:\\Users\\" + username + "\\Pictures\\55\\" + numerStrony + ".png");
+                            "C:\\Users\\" + username + "\\Pictures\\55\\" + page + ".png");
 
                     JLabel label = new JLabel(image);
 

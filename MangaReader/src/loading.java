@@ -1,13 +1,11 @@
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 
-public class wczytywanie {
+public class loading {
 
     public static void deleteFolder(File folder) {
         File[] files = folder.listFiles();
@@ -24,49 +22,48 @@ public class wczytywanie {
     }
 
 
-    public static void Pobiez(String numerRozdzialu) {
+    public static void Download(String chapterNumber) {
 
         BufferedImage image;
 
 
         try {
-            int chapter = Integer.parseInt(numerRozdzialu);
+            int chapter = Integer.parseInt(chapterNumber);
             boolean done = true;
             int i = 0;
             String username = System.getProperty("user.name");
 
             while (done) {
                 try {
-                    String.format(numerRozdzialu, "%02d");
-                    String numerStrony = String.format("%02d", i + 1);
+                    String.format(chapterNumber, "%02d");
+                    String pageNumber = String.format("%02d", i + 1);
                     if (chapter < 100 & chapter <= 23) {
-                        String link = "https://official.lowee.us/manga/Dandadan/00" + numerRozdzialu + "-0" + numerStrony + ".png";
+                        String link = "https://official.lowee.us/manga/Dandadan/00" + chapterNumber + "-0" + pageNumber + ".png";
 
                         URL url = new URL(link);
                         image = ImageIO.read(url);
 
 
-                        ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + numerStrony + ".png"));
+                        ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + pageNumber + ".png"));
                         i++;
 
                     } else if (chapter < 100) {
-                        String link = "https://scans-hot.leanbox.us/manga/Dandadan/00" + numerRozdzialu + "-0" + numerStrony + ".png";
+                        String link = "https://scans-hot.leanbox.us/manga/Dandadan/00" + chapterNumber + "-0" + pageNumber + ".png";
 
                         URL url = new URL(link);
                         image = ImageIO.read(url);
 
-                        ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + numerStrony + ".png"));
+                        ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + pageNumber + ".png"));
                         i++;
                     } else {
-                        String link = "https://scans-hot.leanbox.us/manga/Dandadan/0" + numerRozdzialu + "-0" + numerStrony + ".png";
+                        String link = "https://scans-hot.leanbox.us/manga/Dandadan/0" + chapterNumber + "-0" + pageNumber + ".png";
 
                         URL url = new URL(link);
                         image = ImageIO.read(url);
 
-                        ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + numerStrony + ".png"));
+                        ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + pageNumber + ".png"));
                         i++;
                     }
-
 
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -134,15 +134,15 @@ public class menu extends javax.swing.JFrame {
 
     private void imageDownload(java.awt.event.ActionEvent evt) {
         String username = System.getProperty("user.name");
-        int indexRozdzialu = jComboBox1.getSelectedIndex();
-        String numerRozdzialu = String.format("%02d", indexRozdzialu + 1);
+        int chapterIndex = jComboBox1.getSelectedIndex();
+        String chapterNumber = String.format("%02d", chapterIndex + 1);
 
-        wczytywanie wczytaj1 = new wczytywanie();
+        loading load1 = new loading();
 
-        wczytywanie.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
+        loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
         new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs();
 
-        wczytywanie.Pobiez(numerRozdzialu);
+        loading.Download(chapterNumber);
     }
 
     private void NoweOkno(java.awt.event.ActionEvent evt) {
