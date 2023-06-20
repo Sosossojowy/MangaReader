@@ -58,7 +58,7 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Czytaj");
+        jButton1.setText("Read");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NoweOkno(evt);
@@ -68,7 +68,7 @@ public class menu extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("TJC 82 Marker", 0, 24));
         jLabel1.setText("Manga Reader Dandadan");
 
-        jLabel2.setText("Wybierz rozdział");
+        jLabel2.setText("Choose chapter");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/title.png")));
         jLabel3.setText("jLabel3");
