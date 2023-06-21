@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,6 @@ public class loading {
 
         BufferedImage image;
 
-
         try {
             int chapter = Integer.parseInt(chapterNumber);
             boolean done = true;
@@ -42,7 +42,6 @@ public class loading {
 
                         URL url = new URL(link);
                         image = ImageIO.read(url);
-
 
                         ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + pageNumber + ".png"));
                         i++;
@@ -64,17 +63,13 @@ public class loading {
                         ImageIO.write(image, "png", new File("C:\\Users\\" + username + "\\Pictures\\55\\" + pageNumber + ".png"));
                         i++;
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                     done = false;
                 }
-
             }
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
         }
-
     }
-
 }

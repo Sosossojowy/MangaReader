@@ -146,9 +146,9 @@ public class menu extends javax.swing.JFrame {
     }
 
     private void NoweOkno(java.awt.event.ActionEvent evt) {
-        JButton jbutton1 = new JButton("1");
+        ConstructionWorkButton jbutton1 = new ConstructionWorkButton("1");
 
-        JButton.createFrame();
+        ConstructionWorkButton.createFrame();
 
     }
     private void formWindowsActivated(java.awt.event.WindowEvent evt) {
