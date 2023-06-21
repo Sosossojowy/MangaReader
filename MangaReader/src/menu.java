@@ -1,17 +1,14 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 
 public class menu extends javax.swing.JFrame {
 
 
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
 
 
     public menu() {
@@ -20,15 +17,15 @@ public class menu extends javax.swing.JFrame {
 
     public static void main(String[] args) {
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new menu().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new menu().setVisible(true));
     }
 
-    @SuppressWarnings("unchecked")
     private void initComponents() {
+        javax.swing.JPanel jPanel1;
+        javax.swing.JLabel jLabel3;
+        javax.swing.JLabel jLabel2;
+        javax.swing.JLabel jLabel1;
+        javax.swing.JButton jButton1;
 
         jPanel1 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -39,8 +36,9 @@ public class menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
             public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowsActivated(evt);
+                formWindowsActivated();
             }
         });
 
@@ -52,25 +50,17 @@ public class menu extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(chapters));
 
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                imageDownload(evt);
-            }
-        });
+        jComboBox1.addActionListener(this::imageDownload);
 
         jButton1.setText("Read");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NoweOkno(evt);
-            }
-        });
+        jButton1.addActionListener(this::NewWindow);
 
-        jLabel1.setFont(new java.awt.Font("TJC 82 Marker", 0, 24));
+        jLabel1.setFont(new java.awt.Font("TJC 82 Marker", Font.PLAIN, 24));
         jLabel1.setText("Manga Reader Dandadan");
 
         jLabel2.setText("Choose chapter");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/title.png")));
+        jLabel3.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/title.png"))));
         jLabel3.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -137,7 +127,6 @@ public class menu extends javax.swing.JFrame {
         int chapterIndex = jComboBox1.getSelectedIndex();
         String chapterNumber = String.format("%02d", chapterIndex + 1);
 
-        loading load1 = new loading();
 
         loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
         new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs();
@@ -145,13 +134,13 @@ public class menu extends javax.swing.JFrame {
         loading.Download(chapterNumber);
     }
 
-    private void NoweOkno(java.awt.event.ActionEvent evt) {
-        ConstructionWorkButton jbutton1 = new ConstructionWorkButton("1");
+    private void NewWindow(java.awt.event.ActionEvent evt) {
+        ConstructionWorkButton jbutton1 = new ConstructionWorkButton();
 
         ConstructionWorkButton.createFrame();
 
     }
-    private void formWindowsActivated(java.awt.event.WindowEvent evt) {
+    private void formWindowsActivated() {
         ImageIcon icon = new ImageIcon("src/mr.png");
         setIconImage(icon.getImage());
     }
