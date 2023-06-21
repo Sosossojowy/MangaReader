@@ -20,7 +20,10 @@ public class loading {
         }
         folder.delete();
     }
-
+//todo
+    /**
+     * optimise loading
+     */
 
     public static void Download(String chapterNumber) {
 
