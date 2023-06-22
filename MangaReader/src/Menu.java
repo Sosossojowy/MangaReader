@@ -12,18 +12,18 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class Menu extends javax.swing.JFrame {
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JButton checkAvailabilityButton;
-    private int initialChapterCount = 111;
-    private String progressFileName = "chapter_progress.txt";
+    private javax.swing.JComboBox<String> jComboBox1; // Combo box for selecting chapters
+    private javax.swing.JButton checkAvailabilityButton; // Button for checking chapter availability
+    private int initialChapterCount = 111; // Initial number of chapters
+    private String progressFileName = "chapter_progress.txt"; // File name for storing chapter progress
 
     public Menu() {
-        initComponents();
-        updateChapterComboBox();
+        initComponents(); // Initialize the GUI components
+        updateChapterComboBox(); // Update the chapter selection combo box
     }
 
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> new Menu().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Menu().setVisible(true)); // Create and show the menu GUI
     }
 
     private void initComponents() {
@@ -42,28 +42,27 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204)); // Set the background color of the panel
 
-        // Creating the combo box model with chapter numbers
+        // Generate chapter numbers as strings and populate the combo box
         String[] chapters = IntStream.rangeClosed(1, initialChapterCount)
                 .mapToObj(String::valueOf)
                 .toArray(String[]::new);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(chapters));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(chapters)); // Set the chapter combo box model
 
-        // Adding action listener to the combo box for image download
-        jComboBox1.addActionListener(this::imageDownload);
+        jComboBox1.addActionListener(this::imageDownload); // Add action listener for chapter selection
 
-        jButton1.setText("Read");
-        jButton1.addActionListener(this::NewWindow);
+        jButton1.setText("Read"); // Set the text for the "Read" button
+        jButton1.addActionListener(this::NewWindow); // Add action listener for opening a new window
 
-        checkAvailabilityButton = new JButton("Check Availability");
-        checkAvailabilityButton.addActionListener(this::addChapterIfTuesday);
+        checkAvailabilityButton = new JButton("Check Availability"); // Create a button for checking chapter availability
+        checkAvailabilityButton.addActionListener(this::addChapterIfTuesday); // Add action listener for checking availability on Tuesday
 
-        jLabel1.setFont(new java.awt.Font("TJC 82 Marker", Font.PLAIN, 24));
-        jLabel1.setText("Manga Reader Dandadan");
+        jLabel1.setFont(new java.awt.Font("TJC 82 Marker", Font.PLAIN, 24)); // Set the font for jLabel1
+        jLabel1.setText("Manga Reader Dandadan"); // Set the text for jLabel1
 
-        jLabel2.setText("Choose chapter");
+        jLabel2.setText("Choose chapter"); // Set the text for jLabel2
 
         jLabel3.setIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/title.png"))));
         jLabel3.setText("jLabel3");
@@ -135,55 +134,50 @@ public class Menu extends javax.swing.JFrame {
         int chapterIndex = jComboBox1.getSelectedIndex();
         String chapterNumber = String.format("%02d", chapterIndex + 1);
 
-        // Delete existing folder and create a new one
-        Loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
-        new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs();
+        Loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55")); // Delete the existing folder
+        new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs(); // Create a new folder
 
-        // Perform the image download process
-        Loading.download(chapterNumber);
+        Loading.download(chapterNumber); // Download the chapter images
     }
 
     private void NewWindow(java.awt.event.ActionEvent evt) {
-        // Open a new window when the "Read" button is clicked
-        ConstructionWorkButton.createFrame();
+        ConstructionWorkButton.createFrame(); // Open a new window
     }
 
     private void addChapterIfTuesday(ActionEvent evt) {
-        if (isTuesday()) {
-            // Check if it is Tuesday
-            int currentChapterCount = getCurrentChapterCount();
-            currentChapterCount++;
-            setCurrentChapterCount(currentChapterCount);
-            updateChapterComboBox();
-            System.out.println("Chapter added. Current chapter count: " + currentChapterCount);
+        if (isTuesday()) { // Check if it's Tuesday
+            int currentChapterCount = getCurrentChapterCount(); // Get the current chapter count
+            currentChapterCount++; // Increment the chapter count
+            setCurrentChapterCount(currentChapterCount); // Update the current chapter count
+            updateChapterComboBox(); // Update the chapter selection combo box
+            System.out.println("Chapter added. Current count of chapters: " + currentChapterCount);
+            // Print the message with the updated chapter count
         } else {
-            System.out.println("It's not Tuesday. Chapter not added.");
+            System.out.println("It is not Tuesday. No chapter added.");
+            // Print the message indicating it's not Tuesday
         }
     }
 
     private boolean isTuesday() {
-        // Check if the current day is Tuesday
-        return LocalDate.now().getDayOfWeek() == DayOfWeek.TUESDAY;
+        return LocalDate.now().getDayOfWeek() == DayOfWeek.TUESDAY; // Check if it's Tuesday
     }
 
     private void updateChapterComboBox() {
-        // Update the chapter combo box with the current chapter count
-        int currentChapterCount = getCurrentChapterCount();
+        int currentChapterCount = getCurrentChapterCount(); // Get the current chapter count
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for (int i = 1; i <= currentChapterCount; i++) {
-            model.addElement("Chapter " + i);
+            model.addElement("Chapter " + i); // Add chapter numbers to the combo box model
         }
-        jComboBox1.setModel(model);
+        jComboBox1.setModel(model); // Set the updated model to the chapter combo box
     }
 
     private int getCurrentChapterCount() {
-        // Get the current chapter count from the progress file
-        int progress = initialChapterCount;
+        int progress = initialChapterCount; // Default progress is the initial chapter count
         try {
             Path progressFile = Path.of(progressFileName);
             if (Files.exists(progressFile)) {
                 String content = Files.readString(progressFile);
-                progress = Integer.parseInt(content.trim());
+                progress = Integer.parseInt(content.trim()); // Read the progress from the file
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -192,10 +186,10 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private void setCurrentChapterCount(int currentChapterCount) {
-        // Set the current chapter count in the progress file
         try {
             String content = String.valueOf(currentChapterCount);
             Files.writeString(Path.of(progressFileName), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            // Write the updated chapter count to the file
         } catch (IOException e) {
             e.printStackTrace();
         }
