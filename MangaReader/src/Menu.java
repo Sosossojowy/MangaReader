@@ -6,19 +6,19 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 
-public class menu extends javax.swing.JFrame {
+public class Menu extends javax.swing.JFrame {
 
 
     private javax.swing.JComboBox<String> jComboBox1;
 
 
-    public menu() {
+    public Menu() {
         initComponents();
     }
 
     public static void main(String[] args) {
 
-        java.awt.EventQueue.invokeLater(() -> new menu().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Menu().setVisible(true));
     }
 
     private void initComponents() {
@@ -136,10 +136,7 @@ public class menu extends javax.swing.JFrame {
     }
 
     private void NewWindow(java.awt.event.ActionEvent evt) {
-        ConstructionWorkButton jbutton1 = new ConstructionWorkButton();
-
         ConstructionWorkButton.createFrame();
-
     }
     private void formWindowsActivated() {
         ImageIcon icon = new ImageIcon("src/mr.png");

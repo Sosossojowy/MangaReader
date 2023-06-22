@@ -24,20 +24,15 @@ public class Loading {
         }
         folder.delete();
     }
-
-    /**
-     * Optymalizacja pobierania obrazów
-     */
     public static void download(String chapterNumber) {
         try {
             int chapter = Integer.parseInt(chapterNumber);
-            boolean done = true;
             int i = 0;
             String username = System.getProperty("user.name");
 
             ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 
-            while (done && i < 70) {
+            while (i < 70) {
                 String.format(chapterNumber, "%02d");
                 String pageNumber = String.format("%02d", i + 1);
                 String link;
@@ -50,7 +45,6 @@ public class Loading {
                     link = "https://scans-hot.leanbox.us/manga/Dandadan/0" + chapterNumber + "-0" + pageNumber + ".png";
                 }
 
-                int finalI = i;
                 CompletableFuture.runAsync(() -> {
                     try {
                         URL url = new URL(link);

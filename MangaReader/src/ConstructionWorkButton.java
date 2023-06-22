@@ -1,7 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.io.IOException;
 public class ConstructionWorkButton {
 
     public ConstructionWorkButton() {
+        // sth
     }
 
     public static void createFrame() {
@@ -19,7 +19,7 @@ public class ConstructionWorkButton {
 
             JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
             frame.getContentPane().setBackground(Color.BLACK);
 
             JPanel panel = new JPanel();
@@ -52,14 +52,11 @@ public class ConstructionWorkButton {
                 }
             }
 
-            panel.addMouseWheelListener(new MouseWheelListener() {
-                @Override
-                public void mouseWheelMoved(MouseWheelEvent e) {
-                    JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-                    int notches = e.getWheelRotation();
-                    int scrollAmount = verticalScrollBar.getUnitIncrement() * notches;
-                    verticalScrollBar.setValue(verticalScrollBar.getValue() + scrollAmount);
-                }
+            panel.addMouseWheelListener(e -> {
+                JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+                int notches = e.getWheelRotation();
+                int scrollAmount = verticalScrollBar.getUnitIncrement() * notches;
+                verticalScrollBar.setValue(verticalScrollBar.getValue() + scrollAmount);
             });
 
             panel.setOpaque(true);
