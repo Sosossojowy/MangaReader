@@ -44,12 +44,14 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
+        // Creating the combo box model with chapter numbers
         String[] chapters = IntStream.rangeClosed(1, initialChapterCount)
                 .mapToObj(String::valueOf)
                 .toArray(String[]::new);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(chapters));
 
+        // Adding action listener to the combo box for image download
         jComboBox1.addActionListener(this::imageDownload);
 
         jButton1.setText("Read");
@@ -133,33 +135,39 @@ public class Menu extends javax.swing.JFrame {
         int chapterIndex = jComboBox1.getSelectedIndex();
         String chapterNumber = String.format("%02d", chapterIndex + 1);
 
+        // Delete existing folder and create a new one
         Loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
         new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs();
 
+        // Perform the image download process
         Loading.download(chapterNumber);
     }
 
     private void NewWindow(java.awt.event.ActionEvent evt) {
+        // Open a new window when the "Read" button is clicked
         ConstructionWorkButton.createFrame();
     }
 
     private void addChapterIfTuesday(ActionEvent evt) {
         if (isTuesday()) {
+            // Check if it is Tuesday
             int currentChapterCount = getCurrentChapterCount();
             currentChapterCount++;
             setCurrentChapterCount(currentChapterCount);
             updateChapterComboBox();
-            System.out.println("Dodano rozdział. Aktualna liczba rozdziałów: " + currentChapterCount);
+            System.out.println("Chapter added. Current chapter count: " + currentChapterCount);
         } else {
-            System.out.println("Nie jest wtorek. Nie dodano rozdziału.");
+            System.out.println("It's not Tuesday. Chapter not added.");
         }
     }
 
     private boolean isTuesday() {
+        // Check if the current day is Tuesday
         return LocalDate.now().getDayOfWeek() == DayOfWeek.TUESDAY;
     }
 
     private void updateChapterComboBox() {
+        // Update the chapter combo box with the current chapter count
         int currentChapterCount = getCurrentChapterCount();
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for (int i = 1; i <= currentChapterCount; i++) {
@@ -169,6 +177,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private int getCurrentChapterCount() {
+        // Get the current chapter count from the progress file
         int progress = initialChapterCount;
         try {
             Path progressFile = Path.of(progressFileName);
@@ -181,7 +190,9 @@ public class Menu extends javax.swing.JFrame {
         }
         return progress;
     }
+
     private void setCurrentChapterCount(int currentChapterCount) {
+        // Set the current chapter count in the progress file
         try {
             String content = String.valueOf(currentChapterCount);
             Files.writeString(Path.of(progressFileName), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
