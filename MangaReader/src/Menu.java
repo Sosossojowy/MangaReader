@@ -1,19 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-
 public class Menu extends javax.swing.JFrame {
-
-
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton checkAvailabilityButton;
 
+    private ChapterScraper chapterScraper;
 
     public Menu() {
         initComponents();
+        chapterScraper = new ChapterScraper();
     }
 
     public static void main(String[] args) {
@@ -27,6 +34,10 @@ public class Menu extends javax.swing.JFrame {
         javax.swing.JLabel jLabel2;
         javax.swing.JLabel jLabel1;
         javax.swing.JButton jButton1;
+
+        checkAvailabilityButton = new javax.swing.JButton();
+        checkAvailabilityButton.setText("Check recent chapters");
+        checkAvailabilityButton.addActionListener(this::checkAvailabilityButtonActionPerformed);
 
         jPanel1 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -73,6 +84,8 @@ public class Menu extends javax.swing.JFrame {
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton1)
+                                .addGap(29, 29, 29)
+                                .addComponent(checkAvailabilityButton)
                                 .addGap(29, 29, 29))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,7 +113,9 @@ public class Menu extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton1))
+                                        .addComponent(jButton1)
+                                        .addComponent(checkAvailabilityButton)
+                                )
                                 .addGap(43, 43, 43))
         );
 
@@ -121,6 +136,18 @@ public class Menu extends javax.swing.JFrame {
                                 .addContainerGap())
         );
         pack();
+    }
+
+    private void checkAvailabilityButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            String url = "https://manga4life.com/manga/Dandadan"; // Adres URL strony z listą dostępnych rozdziałów
+
+            List<String> availableChapters = chapterScraper.scrapeAvailableChapters(url);
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(availableChapters.toArray(new String[0])));
+        } catch (IOException e) {
+            // Obsługa błędu IO
+            JOptionPane.showMessageDialog(this, "Błąd odczytu danych.", "Błąd", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void imageDownload(ActionEvent evt) {
