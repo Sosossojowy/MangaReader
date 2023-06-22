@@ -1,30 +1,28 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class Menu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JButton checkAvailabilityButton;
-
-    private ChapterScraper chapterScraper;
+    private int initialChapterCount = 111;
+    private String progressFileName = "chapter_progress.txt";
 
     public Menu() {
         initComponents();
-        chapterScraper = new ChapterScraper();
+        updateChapterComboBox();
     }
 
     public static void main(String[] args) {
-
         java.awt.EventQueue.invokeLater(() -> new Menu().setVisible(true));
     }
 
@@ -35,10 +33,6 @@ public class Menu extends javax.swing.JFrame {
         javax.swing.JLabel jLabel1;
         javax.swing.JButton jButton1;
 
-        checkAvailabilityButton = new javax.swing.JButton();
-        checkAvailabilityButton.setText("Check recent chapters");
-        checkAvailabilityButton.addActionListener(this::checkAvailabilityButtonActionPerformed);
-
         jPanel1 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
@@ -47,16 +41,10 @@ public class Menu extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowsActivated();
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
-        String[] chapters = IntStream.rangeClosed(1, 110)
+        String[] chapters = IntStream.rangeClosed(1, initialChapterCount)
                 .mapToObj(String::valueOf)
                 .toArray(String[]::new);
 
@@ -66,6 +54,9 @@ public class Menu extends javax.swing.JFrame {
 
         jButton1.setText("Read");
         jButton1.addActionListener(this::NewWindow);
+
+        checkAvailabilityButton = new JButton("Check Availability");
+        checkAvailabilityButton.addActionListener(this::addChapterIfTuesday);
 
         jLabel1.setFont(new java.awt.Font("TJC 82 Marker", Font.PLAIN, 24));
         jLabel1.setText("Manga Reader Dandadan");
@@ -114,8 +105,7 @@ public class Menu extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButton1)
-                                        .addComponent(checkAvailabilityButton)
-                                )
+                                        .addComponent(checkAvailabilityButton))
                                 .addGap(43, 43, 43))
         );
 
@@ -138,23 +128,10 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }
 
-    private void checkAvailabilityButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        try {
-            String url = "https://manga4life.com/manga/Dandadan"; // Adres URL strony z listą dostępnych rozdziałów
-
-            List<String> availableChapters = chapterScraper.scrapeAvailableChapters(url);
-            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(availableChapters.toArray(new String[0])));
-        } catch (IOException e) {
-            // Obsługa błędu IO
-            JOptionPane.showMessageDialog(this, "Błąd odczytu danych.", "Błąd", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void imageDownload(ActionEvent evt) {
         String username = System.getProperty("user.name");
         int chapterIndex = jComboBox1.getSelectedIndex();
         String chapterNumber = String.format("%02d", chapterIndex + 1);
-
 
         Loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
         new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs();
@@ -165,8 +142,51 @@ public class Menu extends javax.swing.JFrame {
     private void NewWindow(java.awt.event.ActionEvent evt) {
         ConstructionWorkButton.createFrame();
     }
-    private void formWindowsActivated() {
-        ImageIcon icon = new ImageIcon("src/mr.png");
-        setIconImage(icon.getImage());
+
+    private void addChapterIfTuesday(ActionEvent evt) {
+        if (isTuesday()) {
+            int currentChapterCount = getCurrentChapterCount();
+            currentChapterCount++;
+            setCurrentChapterCount(currentChapterCount);
+            updateChapterComboBox();
+            System.out.println("Dodano rozdział. Aktualna liczba rozdziałów: " + currentChapterCount);
+        } else {
+            System.out.println("Nie jest wtorek. Nie dodano rozdziału.");
+        }
+    }
+
+    private boolean isTuesday() {
+        return LocalDate.now().getDayOfWeek() == DayOfWeek.TUESDAY;
+    }
+
+    private void updateChapterComboBox() {
+        int currentChapterCount = getCurrentChapterCount();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (int i = 1; i <= currentChapterCount; i++) {
+            model.addElement("Chapter " + i);
+        }
+        jComboBox1.setModel(model);
+    }
+
+    private int getCurrentChapterCount() {
+        int progress = initialChapterCount;
+        try {
+            Path progressFile = Path.of(progressFileName);
+            if (Files.exists(progressFile)) {
+                String content = Files.readString(progressFile);
+                progress = Integer.parseInt(content.trim());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return progress;
+    }
+    private void setCurrentChapterCount(int currentChapterCount) {
+        try {
+            String content = String.valueOf(currentChapterCount);
+            Files.writeString(Path.of(progressFileName), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
