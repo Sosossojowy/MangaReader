@@ -19,7 +19,7 @@ public class ConstructionWorkButton {
 
             JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set fullscreen mode
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.getContentPane().setBackground(Color.BLACK);
 
             JPanel panel = new JPanel();
@@ -29,7 +29,7 @@ public class ConstructionWorkButton {
             JScrollPane scrollPane = new JScrollPane(panel);
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-            scrollPane.getVerticalScrollBar().setUnitIncrement(80); // Increase mouse wheel scroll by 80 pixels
+            scrollPane.getVerticalScrollBar().setUnitIncrement(80);
 
             BufferedImage img = null;
             for (int i = 0; i < 70; i++) {
@@ -40,12 +40,11 @@ public class ConstructionWorkButton {
                     Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
                     ImageIcon image = new ImageIcon(scaledImg);
                     JLabel label = new JLabel(image);
-                    label.setAlignmentX(Component.CENTER_ALIGNMENT); // Center align the label content
+                    label.setAlignmentX(Component.CENTER_ALIGNMENT);
                     panel.add(label);
 
-                    // Add empty panel as a separator
                     if (i < 69) {
-                        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Gap between images (20 pixels)
+                        panel.add(Box.createRigidArea(new Dimension(0, 20)));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -53,7 +52,6 @@ public class ConstructionWorkButton {
                 }
             }
 
-            // Add mouse wheel listener
             panel.addMouseWheelListener(new MouseWheelListener() {
                 @Override
                 public void mouseWheelMoved(MouseWheelEvent e) {
@@ -64,7 +62,6 @@ public class ConstructionWorkButton {
                 }
             });
 
-            // Set black background for the panel
             panel.setOpaque(true);
             panel.setBackground(Color.BLACK);
 

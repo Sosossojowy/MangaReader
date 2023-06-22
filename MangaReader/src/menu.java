@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -122,16 +123,16 @@ public class menu extends javax.swing.JFrame {
         pack();
     }
 
-    private void imageDownload(java.awt.event.ActionEvent evt) {
+    private void imageDownload(ActionEvent evt) {
         String username = System.getProperty("user.name");
         int chapterIndex = jComboBox1.getSelectedIndex();
         String chapterNumber = String.format("%02d", chapterIndex + 1);
 
 
-        loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
+        Loading.deleteFolder(new File("C:\\Users\\" + username + "\\Pictures\\55"));
         new File("C:\\Users\\" + username + "\\Pictures\\55").mkdirs();
 
-        loading.Download(chapterNumber);
+        Loading.download(chapterNumber);
     }
 
     private void NewWindow(java.awt.event.ActionEvent evt) {
