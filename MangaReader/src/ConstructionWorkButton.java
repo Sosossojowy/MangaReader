@@ -8,7 +8,7 @@ import java.io.IOException;
 public class ConstructionWorkButton {
 
     public ConstructionWorkButton() {
-        // sth
+        // Constructor
     }
 
     public static void createFrame() {
@@ -17,21 +17,25 @@ public class ConstructionWorkButton {
             final int height = 1145;
             String username = System.getProperty("user.name");
 
+            // Create the main frame
             JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             frame.setExtendedState(Frame.MAXIMIZED_BOTH);
             frame.getContentPane().setBackground(Color.BLACK);
 
+            // Create a panel to hold the images
             JPanel panel = new JPanel();
             panel.setBackground(Color.BLACK);
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+            // Create a scroll pane for vertical scrolling
             JScrollPane scrollPane = new JScrollPane(panel);
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             scrollPane.getVerticalScrollBar().setUnitIncrement(80);
 
             BufferedImage img = null;
+            // Load and display images
             for (int i = 0; i < 70; i++) {
                 String page = String.format("%02d", i + 1);
                 try {
@@ -52,6 +56,7 @@ public class ConstructionWorkButton {
                 }
             }
 
+            // Add a mouse wheel listener for scrolling
             panel.addMouseWheelListener(e -> {
                 JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
                 int notches = e.getWheelRotation();
@@ -62,6 +67,7 @@ public class ConstructionWorkButton {
             panel.setOpaque(true);
             panel.setBackground(Color.BLACK);
 
+            // Set the layout and add the scroll pane to the frame
             frame.setLayout(new BorderLayout());
             frame.add(scrollPane, BorderLayout.CENTER);
             frame.setVisible(true);
