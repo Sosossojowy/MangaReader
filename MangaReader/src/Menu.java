@@ -14,10 +14,10 @@ import java.util.stream.IntStream;
 
 public class Menu extends JFrame {
     private JComboBox<String> jComboBox1;
-    private JButton checkAvailabilityButton;
-    private int initialChapterCount = 0;
-    private String progressFileName = "chapter_progress.txt";
-    private LocalDate startDate = LocalDate.of(2021, 5, 4);
+
+    private final int initialChapterCount = 0;
+    private final String progressFileName = "chapter_progress.txt";
+    private final LocalDate startDate = LocalDate.of(2021, 5, 4);
 
     public Menu() {
         initComponents();
@@ -29,6 +29,7 @@ public class Menu extends JFrame {
     }
 
     private void initComponents() {
+        JButton checkAvailabilityButton;
         JPanel jPanel1 = new JPanel();
         jComboBox1 = new JComboBox<>();
         JButton jButton1 = new JButton();
