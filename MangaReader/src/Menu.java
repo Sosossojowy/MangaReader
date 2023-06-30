@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -16,6 +17,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton checkAvailabilityButton; // Button for checking chapter availability
     private int initialChapterCount = 111; // Initial number of chapters
     private String progressFileName = "chapter_progress.txt"; // File name for storing chapter progress
+    private LocalDate startDate = LocalDate.of(2021, 4, 27); // Start date for counting Tuesdays
 
     public Menu() {
         initComponents(); // Initialize the GUI components
@@ -145,9 +147,9 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private void addChapterIfTuesday(ActionEvent evt) {
-        if (isTuesday()) { // Check if it's Tuesday
-            int currentChapterCount = getCurrentChapterCount(); // Get the current chapter count
-            currentChapterCount++; // Increment the chapter count
+        int tuesdaysPassed = countTuesdaysPassed(startDate, LocalDate.now()); // Count the number of Tuesdays passed
+        if (tuesdaysPassed > 0) { // Check if any Tuesdays have passed
+            int currentChapterCount = initialChapterCount + tuesdaysPassed; // Calculate the current chapter count
             setCurrentChapterCount(currentChapterCount); // Update the current chapter count
             updateChapterComboBox(); // Update the chapter selection combo box
             System.out.println("Chapter added. Current count of chapters: " + currentChapterCount);
@@ -158,40 +160,39 @@ public class Menu extends javax.swing.JFrame {
         }
     }
 
-    private boolean isTuesday() {
-        return LocalDate.now().getDayOfWeek() == DayOfWeek.TUESDAY; // Check if it's Tuesday
+    private int countTuesdaysPassed(LocalDate startDate, LocalDate endDate) {
+        return (int) ChronoUnit.WEEKS.between(startDate, endDate.with(DayOfWeek.TUESDAY));
+        // Count the number of Tuesdays between the start and end dates
     }
 
-    private void updateChapterComboBox() {
-        int currentChapterCount = getCurrentChapterCount(); // Get the current chapter count
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        for (int i = 1; i <= currentChapterCount; i++) {
-            model.addElement("Chapter " + i); // Add chapter numbers to the combo box model
+    private void setCurrentChapterCount(int count) {
+        try {
+            Files.writeString(Path.of(progressFileName), String.valueOf(count), StandardOpenOption.CREATE);
+            // Write the current chapter count to the progress file
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        jComboBox1.setModel(model); // Set the updated model to the chapter combo box
     }
 
     private int getCurrentChapterCount() {
-        int progress = initialChapterCount; // Default progress is the initial chapter count
         try {
-            Path progressFile = Path.of(progressFileName);
-            if (Files.exists(progressFile)) {
-                String content = Files.readString(progressFile);
-                progress = Integer.parseInt(content.trim()); // Read the progress from the file
-            }
+            String countString = Files.readString(Path.of(progressFileName));
+            return Integer.parseInt(countString.trim());
+            // Read the current chapter count from the progress file and convert it to an integer
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return progress;
+        return -1;
     }
 
-    private void setCurrentChapterCount(int currentChapterCount) {
-        try {
-            String content = String.valueOf(currentChapterCount);
-            Files.writeString(Path.of(progressFileName), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-            // Write the updated chapter count to the file
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void updateChapterComboBox() {
+        int currentChapterCount = getCurrentChapterCount();
+        if (currentChapterCount != -1) {
+            String[] chapters = IntStream.rangeClosed(1, currentChapterCount)
+                    .mapToObj(String::valueOf)
+                    .toArray(String[]::new);
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(chapters));
+            // Update the chapter combo box with the available chapters
         }
     }
 }
